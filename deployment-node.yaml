@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitnami-node
+  namespace: blogs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bitnami-node
+  template:
+    metadata:
+      labels:
+        app: bitnami-node
+    spec:
+      containers:
+        - name: bitnami-node
+          image: bitnami/node:latest
+          ports:
+            - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bitnami-node
+  namespace: blogs
+spec:
+  selector:
+    app: bitnami-node
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 3000
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000  
